@@ -15,7 +15,7 @@ export default function Login() {
 
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
-  const domain = "http://localhost:5000/api"; // Fixed undefined VITE_DOMAIN
+  const domain = "http://localhost:5004/api";
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isNewUser, setIsNewUser] = useState(false);

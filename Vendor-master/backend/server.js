@@ -23,7 +23,7 @@ app.use(
 );
 app.use(cors({
     origin: [
-      "http://localhost:5173",
+      "http://localhost:5176",
       "http://vendor.farmseasy.in",
       "https://vendor.farmseasy.in",
     ],

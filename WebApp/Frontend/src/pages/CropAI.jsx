@@ -16,7 +16,7 @@ export default function CropAI() {
 
   const hasAnalyzedRef = useRef(false);
 
-  const domain = "http://localhost:5000/api"; // Fixed undefined VITE_DOMAIN
+  const domain = "http://localhost:5004/api";
   const { user } = useAuth();
 
   // receive file from child

@@ -3,8 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 const apiKey = process.env.GEMINI_API_KEY;
 
 if (!apiKey) {
-  console.error("GEMINI_API_KEY missing");
-  process.exit(1);
+  console.warn("GEMINI_API_KEY missing — Gemini-backed routes will not work.");
 }
 
 const ai = new GoogleGenAI({ apiKey });

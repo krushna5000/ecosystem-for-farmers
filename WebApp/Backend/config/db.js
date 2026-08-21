@@ -11,11 +11,8 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: Number(process.env.DB_PORT),
 
-  ssl: {
-    rejectUnauthorized: false,
-  },
-
-  // ssl: false
+  // Enable SSL only when explicitly requested (e.g. AWS RDS). Local Postgres doesn't support SSL.
+  ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
 
 pool

@@ -7,6 +7,11 @@ const connectDB = async () => {
     return;
   }
 
+  if (!process.env.MONGO_URI) {
+    console.warn("MONGO_URI not set — skipping MongoDB connection. Mongo-backed routes will not work.");
+    return;
+  }
+
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
       dbName: process.env.MONGO_DB_NAME,
@@ -17,7 +22,6 @@ const connectDB = async () => {
     console.log("MongoDB connected");
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
-    process.exit(1);
   }
 };
 

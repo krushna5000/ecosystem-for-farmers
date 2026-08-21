@@ -25,6 +25,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:5174",
+      "http://localhost:5177",
       "https://zeocrop.farmseasy.in",
       "https://psvfl5d8-5173.inc1.devtunnels.ms/",
     ],
