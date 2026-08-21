@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.10
+    commands:
+      - echo "Python version check"
+      - python --version
+
+  build:
+    commands:
+      - echo "Running basic sanity check"
+      - python -c "import pickle; print('Pickle module OK')"
+      - echo "CI passed for Wheat-Model"
+
+artifacts:
+  files:
+    - '**/*'

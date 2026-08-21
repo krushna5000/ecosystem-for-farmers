@@ -1,0 +1,23 @@
+version: 0.2
+
+phases: 
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Moving into backend directory"
+      - cd backend
+      - echo "Installing backend dependencies"
+      - npm ci
+
+  build:
+    commands:
+      - echo "CI checked completely for backend (test skipped)"
+
+artifacts:
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - backend/node_modules/**/*

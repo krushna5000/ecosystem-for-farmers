@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+
+  pre_build:
+    commands:
+      - echo "Installing frontend dependencies"
+      - cd Frontend
+      - npm install
+      - cd ..
+
+      - echo "Installing backend dependencies"
+      - cd Backend
+      - npm install
+      - cd ..
+
+  build:
+    commands:
+      - echo "Building frontend (Vite)"
+      - cd Frontend
+      - npm run build
+      - cd ..
+
+artifacts:
+  files:
+    - Backend/**
+    - Frontend/dist/**
+    - appspec.yml
+    - scripts/**

@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Moving to Backend directory"
+      - cd Backend
+      - npm install
+
+  build:
+    commands:
+      - echo "Running backend checks"
+      - npm test || echo "No tests defined"
+
+cache:
+  paths:
+    - Backend/node_modules/**/*

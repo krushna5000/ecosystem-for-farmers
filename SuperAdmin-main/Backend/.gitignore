@@ -1,0 +1,10 @@
+node_modules/
+.env
+<<<<<<< HEAD
+.env.local
+node_modules
+
+node_modules/
+.env
+=======
+>>>>>>> f05f1b2 (gitignore)

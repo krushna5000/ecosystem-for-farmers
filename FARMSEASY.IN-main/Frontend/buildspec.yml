@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Entering Frontend directory"
+      - cd Frontend
+      - echo "Installing frontend dependencies"
+      - npm install
+
+  build:
+    commands:
+      - echo "Building frontend application"
+      - npm run build
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: Frontend/dist
+
+cache:
+  paths:
+    - Frontend/node_modules/**/*

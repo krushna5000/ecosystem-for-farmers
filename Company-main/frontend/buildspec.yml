@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Moving into frontend directory"
+      - cd frontend
+      - echo "Installing dependencies"
+      - npm ci
+
+  build:
+    commands:
+      - echo "Building frontend (Vite)"
+      - npm run build
+
+artifacts:
+  base-directory: frontend/dist
+  files:
+    - '**/*'
+
+cache:
+  paths:
+    - frontend/node_modules/**/*

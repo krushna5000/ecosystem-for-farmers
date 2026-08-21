@@ -1,0 +1,29 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_OPTIONS: "--max_old_space_size=4096"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing MapPrototype frontend dependencies"
+      - cd MapPrototype/frontend
+      - |
+        if [ -f package-lock.json ]; then
+          npm ci
+        else
+          npm install
+        fi
+
+  build:
+    commands:
+      - echo "Building MapPrototype frontend"
+      - npm run build
+
+artifacts:
+  base-directory: MapPrototype/frontend/dist
+  files:
+    - '**/*'

@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_OPTIONS: "--max_old_space_size=4096"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Installing Product Prototype frontend dependencies"
+      - npm ci --prefix "Product Prototype"
+
+  build:
+    commands:
+      - echo "Building Product Prototype frontend"
+      - npm run build --prefix "Product Prototype"
+
+artifacts:
+  base-directory: "Product Prototype/dist"
+  files:
+    - '**/*'
