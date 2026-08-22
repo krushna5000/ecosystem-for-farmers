@@ -1,33 +1,20 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import dotenv from 'dotenv';
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
 
-dotenv.config();
-
-// Configure S3 client
-export const s3 = new S3Client({
-  region: process.env.AWS_REGION || 'ap-south-1',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
-
-// Upload to S3 function
+// Local disk storage for dev/testing — avoids requiring real AWS credentials.
+// Files are saved under uploads/<folder> and served via the /uploads static route in server.js.
 export const uploadToS3 = async (file, folder) => {
-  const fileName = `${folder}/${Date.now()}-${file.originalname}`;
-  const params = {
-    Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: fileName,
-    Body: file.buffer,
-    ContentType: file.mimetype,
-    ACL: 'public-read',
-  };
+  const ext = file.originalname.includes(".")
+    ? file.originalname.split(".").pop()
+    : "bin";
+  const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
-  try {
-    const command = new PutObjectCommand(params);
-    await s3.send(command);
-    return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION || 'us-east-1'}.amazonaws.com/${fileName}`;
-  } catch (error) {
-    throw new Error(`S3 upload failed: ${error.message}`);
-  }
+  const dir = path.join(process.cwd(), "uploads", folder);
+  fs.mkdirSync(dir, { recursive: true });
+
+  fs.writeFileSync(path.join(dir, fileName), file.buffer);
+
+  const port = process.env.PORT || 5003;
+  return `http://localhost:${port}/uploads/${folder}/${fileName}`;
 };

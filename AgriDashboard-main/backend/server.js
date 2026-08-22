@@ -36,7 +36,7 @@ app.use("/api", apiLimiter);
 
 
 
-app.get('/', (req, res) => { res.sendStatus('Server running on port'); })
+app.get('/', (req, res) => { res.send('Server running on port ' + PORT); })
 
 
 

@@ -32,7 +32,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Note: Static file serving removed as files are now hosted on S3
+app.use("/uploads", express.static("uploads"));
 
 // Vendor Auth API
 app.use("/api/vendor", vendorAuthRoutes);
