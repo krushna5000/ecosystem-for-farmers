@@ -1,0 +1,10 @@
+{
+  "name": "ecosystem-for-farmers",
+  "private": true,
+  "description": "FarmsEasy ecosystem: one backend (./backend) + all web frontends",
+  "scripts": {
+    "dev": "node dev-all.mjs",
+    "dev:list": "node dev-all.mjs --list",
+    "test:backend": "npm --prefix backend test"
+  }
+}

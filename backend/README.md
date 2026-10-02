@@ -29,6 +29,35 @@ npm test                    # 8 smoke suites on in-memory Postgres — no databa
 
 Change the schema in `src/db/schema/*`, then `npm run db:generate` to produce a new migration.
 
+## Run everything (backend + all frontends)
+
+From the repository root:
+
+```bash
+npm run dev            # = node dev-all.mjs — starts the API and every web frontend, Ctrl+C stops all
+npm run dev:list       # print services and ports
+node dev-all.mjs --only=backend,admin,company   # start a subset
+```
+
+The first run installs any missing `node_modules` (with `npm ci`, so lockfiles are untouched).
+
+| Service | URL | API prefix it talks to |
+|---|---|---|
+| backend | http://localhost:5000 | — |
+| Super Admin (`SuperAdmin-main/Frontend`) | :5173 | `/api/super-admin` |
+| Company (`Company/frontend`) | :5174 | `/api/company-portal` |
+| Admin (`AdminFarmseasy/Frontend`) | :5175 | `/api/admin` |
+| Vendor (`Vendor-master/frontend`) | :5176 | `/api/vendor-portal` |
+| Farmer web app (`WebApp/Frontend`) | :5177 | `/api/app` |
+| Agri dashboard (`AgriDashboard-main/frontend`) | :5178 | none (static UI) |
+| Website + CMS (`FARMSEASY.IN-main/Frontend`) | :5179 | `/api/website` |
+| New marketplace (`New-Marketplace-main/Frontend`) | :5180 | none (static UI) |
+| GDD prototype (`FarmsEasy-AI-main/GDD/Frontend`) | :5181 | `/api/prototypes/gdd` |
+| Map prototype (`FarmsEasy-AI-main/MapPrototype/frontend`) | :5182 | `/api/prototypes/map` |
+| Product prototype (`FarmsEasy-AI-main/Product Prototype`) | :5183 | none (static UI) |
+
+Each frontend gets its API URL from a git-ignored `.env` (`VITE_API_URL`, `VITE_BACKEND_URL` or `VITE_DOMAIN`). Dev logins for the admin portals are created by `npm run db:seed`, `db:seed:admin` and `db:seed:dev` (credentials are in `backend/.env`). `Application-main` is the Flutter app; it has no API client yet and is not part of this.
+
 ## Portals and routes
 
 Every old backend became a module mounted under one prefix. **Inside a module the original paths are unchanged apart from the old leading `/api`**, so each frontend only needs a new base URL. Per-module `ROUTES.md` lists every route (old path → new path, method, auth).
@@ -41,14 +70,15 @@ Every old backend became a module mounted under one prefix. **Inside a module th
 | `Company/backend` | `/api/company-portal` | `/api/company/login` → `/api/company-portal/company/login` | 45 |
 | `Vendor-master/backend` | `/api/vendor-portal` | `/api/brands` → `/api/vendor-portal/brands` | 47 |
 | `FARMSEASY.IN-main/Backend` | `/api/website` | `/api/jobs` → `/api/website/jobs` | 26 |
+| `FarmsEasy-AI-main` GDD + Map prototypes | `/api/prototypes` | `/api/transform` → `/api/prototypes/gdd/transform`, `/api/farm` → `/api/prototypes/map/farm` | 2 |
 
 See `src/modules/*/ROUTES*.md`.
 
 ## What was merged and what was not
 
-- **Merged:** the six backends above. `APP/` is an older copy of `WebApp/Backend` and was not ported separately.
+- **Merged:** the six backends above plus the two prototype backends. `APP/` is an older copy of `WebApp/Backend` and was not ported separately.
 - **Not ported — superseded:** `superAdminDashboard-main/backend` targets an old schema (`countries`, `category_stages`, `crop_tracking`, `admins.permissions`, …) that is not in the database documentation.
-- **Not ported — prototypes:** `AgriDashboard-main/backend` (Mongo; its auth/farm routes were never mounted), `FarmsEasy-AI-main/GDD` and `MapPrototype` (a few lines each; GDD logic already exists in the CLSM agronomy service).
+- **Not ported — prototypes:** `AgriDashboard-main/backend` (Mongo; its auth/farm routes were never mounted and its frontend makes no API calls). The two tiny `FarmsEasy-AI-main` prototype backends (GDD, Map) *were* ported as the `prototypes` module so their frontends work.
 - **Still MongoDB (Mongoose):** crop-ai diagnosis cache, weather history, field indexes, stress results, CLSM lifecycle. These collections are not in the PostgreSQL documentation, so they stay on Mongoose. `MONGO_URI` is optional exactly as before.
 - The old folders are untouched, so nothing is lost; delete them once you are satisfied.
 

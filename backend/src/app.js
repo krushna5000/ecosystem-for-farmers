@@ -11,6 +11,7 @@ import superAdminRouter from "./modules/superAdmin/index.js";
 import companyRouter from "./modules/company/index.js";
 import vendorRouter from "./modules/vendor/index.js";
 import websiteRouter from "./modules/website/index.js";
+import prototypesRouter from "./modules/prototypes/index.js";
 
 // Origins of every FarmsEasy frontend (merged from the previous per-portal servers).
 const DEFAULT_ORIGINS = [
@@ -19,6 +20,12 @@ const DEFAULT_ORIGINS = [
   "http://localhost:5174",
   "http://localhost:5177",
   "https://zeocrop.farmseasy.in",
+  // admin portal
+  "http://localhost:5175",
+  // marketing website + AI prototypes (local dev)
+  "http://localhost:5179",
+  "http://localhost:5181",
+  "http://localhost:5182",
   // company + vendor portals
   "http://localhost:5176",
   "http://company.farmseasy.in",
@@ -76,6 +83,7 @@ export function createApp() {
   app.use("/api/company-portal", companyRouter); // company portal
   app.use("/api/vendor-portal", vendorRouter); //  vendor portal
   app.use("/api/website", websiteRouter); //    farmseasy.in marketing site CMS
+  app.use("/api/prototypes", prototypesRouter); // GDD + map prototypes (FarmsEasy-AI)
 
   app.use((req, res) => {
     res.status(404).json({ success: false, message: `Route not found: ${req.method} ${req.originalUrl}` });

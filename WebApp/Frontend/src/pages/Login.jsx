@@ -15,7 +15,7 @@ export default function Login() {
 
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
-  const domain = "http://localhost:5004/api";
+  const domain = import.meta.env.VITE_DOMAIN || "http://localhost:5000/api/app";
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isNewUser, setIsNewUser] = useState(false);

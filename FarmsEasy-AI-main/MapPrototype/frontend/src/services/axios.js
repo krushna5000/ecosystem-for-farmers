@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiClient = axios.create({
   // Point this to your Express server URL
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://localhost:5000/api/prototypes/map",
   headers: {
     "Content-Type": "application/json",
   },

@@ -25,7 +25,7 @@ const AdminNavbar = ({ toggleSidebar }) => {
   const handleLogout = async () => {
     try {
       await axios.post(
-      `${import.meta.env.VITE_API_URL}/vendor/logout`,
+      `${import.meta.env.VITE_BACKEND_URL}/logout`,
         {},
         { withCredentials: true }
       );

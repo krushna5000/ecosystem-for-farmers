@@ -9,6 +9,8 @@ router.post("/login", adminLogin);
 
 // Protected
 router.post("/logout", adminAuth, adminLogout);
+// The admin frontend calls POST <base>/admin/logout, which the old backend never served.
+router.post("/admin/logout", adminAuth, adminLogout);
 
 router.get("/dashboard", adminAuth, (req, res) => {
   res.json({

@@ -13,7 +13,7 @@ export default function CropForm() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/api/transform", {
+      const response = await axios.post("http://localhost:5000/api/prototypes/gdd/transform", {
         cropName: cropName,
         Latitude: latitude,
         Longitude: longitude,

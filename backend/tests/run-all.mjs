@@ -2,7 +2,7 @@
 import { spawnSync } from "node:child_process";
 
 const suites = [
-  "app-core", "app-ai", "admin", "super-admin", "company", "vendor", "website", "integration",
+  "app-core", "app-ai", "admin", "super-admin", "company", "vendor", "website", "prototypes", "integration",
 ];
 let failed = 0;
 for (const name of suites) {

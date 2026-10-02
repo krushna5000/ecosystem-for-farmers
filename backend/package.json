@@ -17,7 +17,9 @@
     "db:studio": "drizzle-kit studio",
     "db:seed": "node src/modules/superAdmin/scripts/seedSuperAdmin.js",
     "test": "node tests/run-all.mjs",
-    "db:create": "node scripts/create-db.mjs"
+    "db:create": "node scripts/create-db.mjs",
+    "db:seed:admin": "node scripts/seed-admin.mjs",
+    "db:seed:dev": "node scripts/seed-dev-users.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1145.0",
