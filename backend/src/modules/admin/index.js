@@ -1,10 +1,10 @@
 import { Router } from "express";
-import adminRoutes from "./routes/adminRoutes.js";
-import companyRoutes from "./routes/companyRoutes.js";
-import companyOtpRoutes from "./routes/companyOtpRoutes.js";
-import companyTypeRoutes from "./routes/companyTypeRoutes.js";
-import vendorRoutes from "./routes/vendorRoutes.js";
-import vendorOtpRoutes from "./routes/vendorOtpRoutes.js";
+import adminRoutes from "./auth/auth.routes.js";
+import companyRoutes from "./company/company.routes.js";
+import companyOtpRoutes from "./companyOtp/companyOtp.routes.js";
+import companyTypeRoutes from "./companyType/companyType.routes.js";
+import vendorRoutes from "./vendor/vendor.routes.js";
+import vendorOtpRoutes from "./vendorOtp/vendorOtp.routes.js";
 
 // Admin portal — mounted by app.js at /api/admin
 const router = Router();

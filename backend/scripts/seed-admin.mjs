@@ -3,7 +3,7 @@
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { db, closeDb } from "../src/db/index.js";
+import { db, closeDb } from "../src/db/connection.js";
 import { admins } from "../src/db/schema/index.js";
 
 const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME = "Admin" } = process.env;

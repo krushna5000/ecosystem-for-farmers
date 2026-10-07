@@ -1,11 +1,11 @@
 import { Router } from "express";
-import companyRoutes from "./routes/companyRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
-import subCategoryRoutes from "./routes/subCategoryRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import inventoryRoutes from "./routes/inventory.routes.js";
-import cropRoutes from "./routes/cropRoutes.js";
-import leadRoutes from "./routes/leadRoutes.js";
+import companyRoutes from "./company/company.routes.js";
+import categoryRoutes from "./category/category.routes.js";
+import subCategoryRoutes from "./subCategory/subCategory.routes.js";
+import productRoutes from "./product/product.routes.js";
+import inventoryRoutes from "./inventory/inventory.routes.js";
+import cropRoutes from "./crop/crop.routes.js";
+import leadRoutes from "./lead/lead.routes.js";
 
 // Company portal — mounted at /api/company-portal (old paths minus the leading /api).
 const router = Router();

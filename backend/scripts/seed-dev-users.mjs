@@ -6,7 +6,7 @@ import "dotenv/config";
 import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { db, closeDb } from "../src/db/index.js";
+import { db, closeDb } from "../src/db/connection.js";
 import { companyTypes, companies, vendors, websiteAdmin } from "../src/db/schema/index.js";
 
 const need = (k) => {

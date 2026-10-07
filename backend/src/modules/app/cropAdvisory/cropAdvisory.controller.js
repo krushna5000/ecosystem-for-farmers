@@ -1,0 +1,11 @@
+import { getCropById } from "../agronomy/crop.service.js";
+
+const cropAdvisory = async (req, res) => {
+  const { crop_id } = req.body ?? {};
+
+  const crop = await getCropById(crop_id);
+
+  res.json(crop);
+};
+
+export default cropAdvisory;

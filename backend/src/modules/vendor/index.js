@@ -1,12 +1,12 @@
 import { Router } from "express";
-import vendorAuthRoutes from "./routes/vendorAuthRoutes.js";
-import brandRoutes from "./routes/brandRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
-import subCategoryRoutes from "./routes/subCategoryRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import inventoryRoutes from "./routes/inventoryRoutes.js";
-import serviceLocationRoutes from "./routes/serviceLocationRoutes.js";
-import cropRoutes from "./routes/cropRoutes.js";
+import vendorAuthRoutes from "./auth/auth.routes.js";
+import brandRoutes from "./brand/brand.routes.js";
+import categoryRoutes from "./category/category.routes.js";
+import subCategoryRoutes from "./subCategory/subCategory.routes.js";
+import productRoutes from "./product/product.routes.js";
+import inventoryRoutes from "./inventory/inventory.routes.js";
+import serviceLocationRoutes from "./serviceLocation/serviceLocation.routes.js";
+import cropRoutes from "./crop/crop.routes.js";
 
 // Mounted by app.js at /api/vendor-portal
 const router = Router();

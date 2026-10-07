@@ -1,9 +1,9 @@
 import { Router } from "express";
-import adminRoutes from "./routes/admin.routes.js";
-import jobRoutes from "./routes/job.routes.js";
-import connectionRoutes from "./routes/connection.routes.js";
-import blogRoutes from "./routes/blog.routes.js";
-import teamRoutes from "./routes/team.routes.js";
+import adminRoutes from "./admin/admin.routes.js";
+import jobRoutes from "./job/job.routes.js";
+import connectionRoutes from "./connection/connection.routes.js";
+import blogRoutes from "./blog/blog.routes.js";
+import teamRoutes from "./team/team.routes.js";
 
 // farmseasy.in marketing website CMS (mounted at /api/website by app.js)
 const router = Router();

@@ -2,7 +2,7 @@ import { Router } from "express";
 import axios from "axios";
 import { env } from "../../../config/env.js";
 import { isMongoConnected } from "../../../db/mongo.js";
-import { GDD, Weather } from "./gdd.models.js";
+import { GDD, Weather } from "./gdd.model.js";
 
 const router = Router();
 

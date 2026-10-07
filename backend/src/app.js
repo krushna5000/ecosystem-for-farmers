@@ -3,15 +3,10 @@ import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import { env } from "./config/env.js";
-import { UPLOADS_DIR } from "./lib/storage.js";
+import { UPLOADS_DIR } from "./utils/storage.js";
 
-import appRouter from "./modules/app/index.js";
-import adminRouter from "./modules/admin/index.js";
-import superAdminRouter from "./modules/superAdmin/index.js";
-import companyRouter from "./modules/company/index.js";
-import vendorRouter from "./modules/vendor/index.js";
-import websiteRouter from "./modules/website/index.js";
-import prototypesRouter from "./modules/prototypes/index.js";
+import apiRouter from "./routes/index.js";
+import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 // Origins of every FarmsEasy frontend (merged from the previous per-portal servers).
 const DEFAULT_ORIGINS = [
@@ -75,29 +70,10 @@ export function createApp() {
   app.get("/", (req, res) => res.send("FarmsEasy API is running"));
   app.get("/health", (req, res) => res.json({ status: "ok", uptime: process.uptime() }));
 
-  // One router per portal. Inside each, the original route paths are preserved
-  // (minus the old leading "/api"), so a frontend only needs a new base URL.
-  app.use("/api/app", appRouter); //            farmer app + web app (+ WhatsApp)
-  app.use("/api/admin", adminRouter); //        admin portal
-  app.use("/api/super-admin", superAdminRouter); // super admin portal
-  app.use("/api/company-portal", companyRouter); // company portal
-  app.use("/api/vendor-portal", vendorRouter); //  vendor portal
-  app.use("/api/website", websiteRouter); //    farmseasy.in marketing site CMS
-  app.use("/api/prototypes", prototypesRouter); // GDD + map prototypes (FarmsEasy-AI)
+  app.use("/api", apiRouter); // one router per portal — see routes/index.js
 
-  app.use((req, res) => {
-    res.status(404).json({ success: false, message: `Route not found: ${req.method} ${req.originalUrl}` });
-  });
-
-  // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) => {
-    console.error(err);
-    const status = err.status || err.statusCode || (err.name === "MulterError" ? 400 : 500);
-    res.status(status).json({
-      success: false,
-      message: status >= 500 && env.isProd ? "Internal server error" : err.message || "Internal server error",
-    });
-  });
+  app.use(notFound);
+  app.use(errorHandler);
 
   return app;
 }
