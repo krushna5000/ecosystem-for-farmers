@@ -36,7 +36,10 @@ export const otpVerifications = userSchema.table("otp_verifications", {
   otpCode: varchar("otp_code", { length: 10 }).notNull(),
   expiresAt: timestamp("expires_at").notNull(),
   isUsed: boolean("is_used").default(false),
-});
+},
+(t) => [
+    index("idx_otp_verifications_phone_number_expires_at").on(t.phoneNumber, t.expiresAt),
+]);
 
 export const plans = userSchema.table("plans", {
   id: serial("id").primaryKey(),
@@ -66,6 +69,8 @@ export const subscriptions = userSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
   },
   (t) => [
+    index("idx_subscriptions_user_id_status").on(t.userId, t.status),
+    index("idx_subscriptions_plan_id").on(t.planId),
     check(
       "subscriptions_status_check",
       sql`${t.status} IN ('active', 'expired', 'cancelled', 'pending')`,
@@ -89,6 +94,8 @@ export const payments = userSchema.table(
     paidAt: timestamp("paid_at").defaultNow(),
   },
   (t) => [
+    index("idx_payments_user_id").on(t.userId),
+    index("idx_payments_plan_id").on(t.planId),
     check(
       "payments_payment_status_check",
       sql`${t.paymentStatus} IN ('initiated', 'success', 'failed')`,
@@ -112,6 +119,7 @@ export const yieldBatches = userSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
   },
   (t) => [
+    index("idx_yield_batches_user_id").on(t.userId),
     check("yield_batches_status_check", sql`${t.status} IN ('sold', 'unsold')`),
   ],
 );

@@ -5,6 +5,7 @@ import {
   boolean,
   timestamp,
   unique,
+  index,
 } from "drizzle-orm/pg-core";
 
 export const locationSchema = pgSchema("location_schema");
@@ -29,7 +30,8 @@ export const districts = locationSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
   },
-  (t) => [unique("unique_district_per_state").on(t.districtName, t.stateId)],
+  (t) => [
+    index("idx_districts_state_id").on(t.stateId),unique("unique_district_per_state").on(t.districtName, t.stateId)],
 );
 
 export const cities = locationSchema.table(
@@ -44,7 +46,8 @@ export const cities = locationSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
   },
-  (t) => [unique("unique_city_per_district").on(t.cityName, t.districtId)],
+  (t) => [
+    index("idx_cities_district_id").on(t.districtId),unique("unique_city_per_district").on(t.cityName, t.districtId)],
 );
 
 export const villages = locationSchema.table(
@@ -59,7 +62,8 @@ export const villages = locationSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
   },
-  (t) => [unique("unique_village_per_city").on(t.villageName, t.cityId)],
+  (t) => [
+    index("idx_villages_city_id").on(t.cityId),unique("unique_village_per_city").on(t.villageName, t.cityId)],
 );
 
 export const pincodes = locationSchema.table(
@@ -74,5 +78,6 @@ export const pincodes = locationSchema.table(
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
   },
-  (t) => [unique("unique_pincode_per_village").on(t.pincode, t.villageId)],
+  (t) => [
+    index("idx_pincodes_village_id").on(t.villageId),unique("unique_pincode_per_village").on(t.pincode, t.villageId)],
 );

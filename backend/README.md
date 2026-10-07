@@ -19,7 +19,7 @@ src/
   jobs/             schedulers/ (weather cron); jobs/index.js starts them
   errors/           shared error helpers (dbError)
   utils/            storage (S3 or local), upload (multer), mailer, jwt, rowCase; utils/<portal>/ for portal helpers
-drizzle/            generated SQL migration
+drizzle/            SQL migrations: 0000 baseline, 0001 indexes + constraints, 0002 updated_at triggers
 scripts/            create-db, seed-admin, seed-dev-users, seedSuperAdmin
 test/               smoke tests (npm test)
 docs/routes/        per-portal route tables (old path → new path, method, auth)
@@ -109,8 +109,16 @@ See `docs/routes/*.md`.
 - `companies.password` is nullable (the doc's column table says so and the admin flow creates companies without a password; the doc's DDL says `NOT NULL`).
 - `crops` has no `farm_id` (the doc DDL references one that the table does not define); `states.updated_at ON UPDATE` is not valid PostgreSQL and is handled by Drizzle's `$onUpdate`.
 - `companies.company_type` is `NOT NULL` with `ON DELETE SET NULL` in the doc (contradictory) — kept literally, so deleting a company type that is in use fails.
-- `company_schema.brands.brand_name` is globally `UNIQUE` per the doc, but the old code only checked per company: a brand name used by another company now fails with a 500.
+- `company_schema.brands.brand_name` is unique **per company** (migration `0001`; the doc said globally unique, but the old code only ever checked per company, so a name used by another company used to fail with a 500).
 - `website_schema.team_members.image_url` is `NOT NULL`; creating a member without an image stores `""` (the old code stored NULL).
+
+### Indexes, constraints and triggers (migrations 0001–0002)
+
+- Every foreign-key column is indexed (Postgres does not do this automatically), plus OTP phone/email lookups, `verify_token` (partial), and GIN indexes on `crop_ids` / `disease_names`.
+- `gst_no` / `email` / `phone` on companies and `email` / `phone` on vendors are unique **among non-deleted rows** (`WHERE is_delete IS NOT TRUE`), so a soft-deleted account no longer blocks re-registration.
+- New CHECK constraints (inventory `quantity >= 0` and `stock_status`, `leads.status`) are `NOT VALID`: enforced for new writes, existing rows not scanned. When the data is clean, run `ALTER TABLE … VALIDATE CONSTRAINT …`.
+- A `BEFORE UPDATE` trigger keeps `updated_at` current for raw SQL / scripts too; a value set explicitly by the statement is respected.
+- Not changed (needs a data migration): timestamps without time zone, `onboarding_data.sowing_date` as text, JSON/array columns without foreign keys, and the duplicated company/vendor tables.
 
 ## Open security findings (preserved from the old code — your call)
 

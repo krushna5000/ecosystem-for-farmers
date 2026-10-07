@@ -9,6 +9,7 @@ import {
   jsonb,
   date,
   timestamp,
+  index,
 } from "drizzle-orm/pg-core";
 import { users } from "./users.js";
 import { pincodes } from "./location.js";
@@ -27,7 +28,12 @@ export const farms = farmsSchema.table("farms", {
     .references(() => pincodes.pincodeId, { onDelete: "cascade" }),
   farmCoordinates: json("farm_coordinates").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-});
+},
+(t) => [
+    index("idx_farms_user_id").on(t.userId),
+    index("idx_farms_pincode_id").on(t.pincodeId),
+    index("idx_farms_field_id").on(t.fieldId),
+]);
 
 export const cropCategories = farmsSchema.table("crop_categories", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -54,7 +60,10 @@ export const crops = farmsSchema.table("crops", {
   cropStageId: jsonb("crop_stage_id"),
   tBase: integer("t_base").notNull(), // base temperature (Tbase) for GDD
   createdAt: timestamp("created_at").defaultNow(),
-});
+},
+(t) => [
+    index("idx_crops_category_id").on(t.categoryId),
+]);
 
 export const farmCrops = farmsSchema.table("farm_crops", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -68,4 +77,8 @@ export const farmCrops = farmsSchema.table("farm_crops", {
   sowingDate: date("sowing_date"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().$onUpdate(() => new Date()),
-});
+},
+(t) => [
+    index("idx_farm_crops_farm_id").on(t.farmId),
+    index("idx_farm_crops_crop_id").on(t.cropId),
+]);
