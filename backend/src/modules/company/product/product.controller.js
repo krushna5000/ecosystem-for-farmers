@@ -8,7 +8,7 @@ import {
 } from "../../../db/schema/index.js";
 import { uploadFile } from "../../../utils/storage.js";
 import { snakeKeys, snakeRows } from "../../../utils/rowCase.js";
-import { findRecommendations } from "../recommendation/recommendation.service.js";
+import { findRecommendations } from "../../companyRecommendation/companyRecommendation.service.js";
 import { getPagination, getPaginationMeta } from "../../../utils/company/pagination.util.js";
 import { statusSuccess as success, statusFailure as failure } from "../../../utils/company/response.js";
 import {

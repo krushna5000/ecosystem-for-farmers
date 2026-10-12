@@ -7,14 +7,16 @@ import cookieParser from "cookie-parser";
 process.env.DB_DRIVER = "pglite";
 process.env.JWT_SECRET ||= "smoke-test-secret";
 
-const { default: websiteRouter } = await import("../src/modules/website/index.js");
+const { default: websiteRouter } = await import("../src/routes/website.routes.js");
 const { deleteFile } = await import("../src/utils/storage.js");
+const { errorHandler } = await import("../src/middleware/errorHandler.js");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/website", websiteRouter);
+app.use(errorHandler); // the real handler, so per-route error bodies are exercised
 
 const server = app.listen(0);
 const base = `http://127.0.0.1:${server.address().port}/api/website`;

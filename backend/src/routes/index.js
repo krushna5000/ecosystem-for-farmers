@@ -1,12 +1,12 @@
 import { Router } from "express";
 
-import appRouter from "../modules/app/index.js";
-import adminRouter from "../modules/admin/index.js";
-import superAdminRouter from "../modules/superAdmin/index.js";
-import companyRouter from "../modules/company/index.js";
-import vendorRouter from "../modules/vendor/index.js";
-import websiteRouter from "../modules/website/index.js";
-import prototypesRouter from "../modules/prototypes/index.js";
+import appRouter from "./app.routes.js";
+import adminRouter from "./admin.routes.js";
+import superAdminRouter from "./superAdmin.routes.js";
+import companyRouter from "./company.routes.js";
+import vendorRouter from "./vendor.routes.js";
+import websiteRouter from "./website.routes.js";
+import prototypesRouter from "./prototypes.routes.js";
 
 // One router per portal. Inside each, the original route paths are preserved
 // (minus the old leading "/api"), so a frontend only needs a new base URL.

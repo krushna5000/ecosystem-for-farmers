@@ -14,18 +14,15 @@ const { default: jwt } = await import("jsonwebtoken");
 const { eq } = await import("drizzle-orm");
 const { db } = await import("../src/db/connection.js");
 const s = await import("../src/db/schema/index.js");
-const { default: vendorRouter } = await import("../src/modules/vendor/index.js");
+const { default: vendorRouter } = await import("../src/routes/vendor.routes.js");
+const { errorHandler } = await import("../src/middleware/errorHandler.js");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/vendor-portal", vendorRouter);
-// same shape as app.js error handler
-app.use((err, req, res, next) => {
-  const status = err.status || err.statusCode || (err.name === "MulterError" ? 400 : 500);
-  res.status(status).json({ success: false, message: err.message });
-});
+app.use(errorHandler); // the real handler, so per-route error bodies are exercised
 
 const server = app.listen(0);
 const base = `http://127.0.0.1:${server.address().port}/api/vendor-portal`;

@@ -14,7 +14,8 @@ import bcrypt from "bcryptjs";
 
 const { db } = await import("../src/db/connection.js");
 const { admins, superAdmins, companyTypes, companies, vendors } = await import("../src/db/schema/index.js");
-const { default: adminRouter } = await import("../src/modules/admin/index.js");
+const { default: adminRouter } = await import("../src/routes/admin.routes.js");
+const { errorHandler } = await import("../src/middleware/errorHandler.js");
 const { UPLOADS_DIR } = await import("../src/utils/storage.js");
 
 const app = express();
@@ -22,11 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/admin", adminRouter);
-// same shape as src/middleware/errorHandler.js
-app.use((err, req, res, next) => {
-  const status = err.status || err.statusCode || (err.name === "MulterError" ? 400 : 500);
-  res.status(status).json({ success: false, message: err.message });
-});
+app.use(errorHandler); // the real handler, so per-route error bodies are exercised
 app.use((req, res) => res.status(404).json({ success: false, message: "not found" }));
 
 const server = app.listen(0);

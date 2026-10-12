@@ -12,19 +12,16 @@ const { default: cookieParser } = await import("cookie-parser");
 const { default: bcrypt } = await import("bcryptjs");
 const { db } = await import("../src/db/connection.js");
 const S = await import("../src/db/schema/index.js");
-const { default: companyRouter } = await import("../src/modules/company/index.js");
+const { default: companyRouter } = await import("../src/routes/company.routes.js");
 const { UPLOADS_DIR, deleteFile } = await import("../src/utils/storage.js");
+const { errorHandler } = await import("../src/middleware/errorHandler.js");
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use("/api/company-portal", companyRouter);
-// same shape as src/middleware/errorHandler.js error handler
-app.use((err, req, res, next) => {
-  const status = err.status || (err.name === "MulterError" ? 400 : 500);
-  res.status(status).json({ success: false, message: err.message });
-});
+app.use(errorHandler); // the real handler, so per-route error bodies are exercised
 
 const server = app.listen(0);
 const base = `http://127.0.0.1:${server.address().port}/api/company-portal`;

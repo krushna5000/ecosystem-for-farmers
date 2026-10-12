@@ -1,4 +1,4 @@
-import { findRecommendations } from "../../modules/company/recommendation/recommendation.service.js";
+import { findRecommendations } from "../../modules/companyRecommendation/companyRecommendation.service.js";
 
 /**
  * Product recommendations for a Gemini crop-disease diagnosis.

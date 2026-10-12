@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 process.env.DB_DRIVER = "pglite";
 process.env.JWT_SECRET ||= "smoke-test-secret";
 
-const { default: superAdminRouter } = await import("../src/modules/superAdmin/index.js");
+const { default: superAdminRouter } = await import("../src/routes/superAdmin.routes.js");
 const { db } = await import("../src/db/connection.js");
 const { superAdmins, vendors, crops } = await import("../src/db/schema/index.js");
 
@@ -16,6 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/super-admin", superAdminRouter);
+const { errorHandler } = await import("../src/middleware/errorHandler.js");
+app.use(errorHandler); // the real handler, so per-route error bodies are exercised
 
 const server = app.listen(0);
 const base = `http://127.0.0.1:${server.address().port}/api/super-admin`;
